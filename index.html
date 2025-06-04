@@ -26,36 +26,29 @@
 
     .background-text {
       position: absolute;
-      font-size: 6vw;
-      font-weight: 700;
-      font-family: 'Montserrat', sans-serif;
+      font-size: 28vw;
+      font-weight: 800;
       color: rgba(255, 255, 255, 0.015);
+      z-index: 0;
       text-align: center;
       width: 100%;
-      top: 60%;
+      top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
       user-select: none;
-      z-index: 0;
       white-space: nowrap;
-      letter-spacing: 4px;
     }
 
     .container {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 16px;
-      padding: 30px 20px;
+      padding: 32px;
       box-shadow: 0 0 20px rgba(0,0,0,0.5);
       z-index: 1;
       text-align: center;
       width: 90%;
-      max-width: 380px;
-    }
-
-    h2 {
-      font-weight: 700;
-      margin-bottom: 10px;
+      max-width: 350px;
     }
 
     input {
@@ -76,11 +69,14 @@
       font-size: 16px;
       cursor: pointer;
       transition: background 0.3s ease;
-      width: 100%;
     }
 
     button:hover {
       background-color: #1d4ed8;
+    }
+
+    button:active {
+      transform: scale(0.97);
     }
 
     .result {
@@ -105,8 +101,15 @@
     <div class="result" id="result"></div>
   </div>
 
+  <!-- 🔊 Suara klik -->
+  <audio id="clickSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_6ba9a309a3.mp3" preload="auto"></audio>
+
   <script>
+    const clickSound = document.getElementById('clickSound');
+
     async function lookupIP() {
+      clickSound.play();
+
       const ip = document.getElementById('ipInput').value.trim();
       const resultDiv = document.getElementById('result');
       resultDiv.innerHTML = "🔍 Sedang mencari...";
