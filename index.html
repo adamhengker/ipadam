@@ -2,142 +2,114 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>IP Location Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
-
     body {
       margin: 0;
+      background: #0e1628;
       font-family: 'Segoe UI', sans-serif;
-      background: #0f172a;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      touch-action: manipulation;
-      overscroll-behavior: none;
+      color: white;
+      overflow: hidden;
     }
-
     .container {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      width: 90%;
-      max-width: 320px;
-      text-align: center;
-      position: relative;
-    }
-
-    .name-tag {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.2);
       position: absolute;
-      top: 10px;
-      left: 12px;
-      text-transform: uppercase;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
     }
-
-    h2 {
-      margin: 30px 0 15px 0;
-      font-weight: bold;
-      font-size: 1.2rem;
+    .box {
+      background: #1a233a;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #00000070;
     }
-
-    input {
-      width: 100%;
-      padding: 12px;
+    input[type="text"] {
+      padding: 10px;
+      width: 250px;
       border: none;
       border-radius: 8px;
       font-size: 14px;
-      opacity: 0.85;
-      box-sizing: border-box;
+      margin-bottom: 10px;
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #111;
     }
-
-    button {
-      margin-top: 12px;
-      padding: 12px;
-      width: 100%;
-      background-color: #2563eb;
-      color: #fff;
+    input::placeholder {
+      color: rgba(0, 0, 0, 0.4);
       font-weight: bold;
+    }
+    button {
+      padding: 10px 20px;
+      background: #2d6cff;
+      color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      transition: background-color 0.2s ease;
-      box-sizing: border-box;
+      font-weight: bold;
     }
-
-    button:hover {
-      background-color: #1d4ed8;
-    }
-
     #result {
-      margin-top: 20px;
-      font-size: 0.9rem;
-      line-height: 1.4;
+      margin-top: 15px;
       text-align: left;
     }
-
-    @media (min-width: 768px) {
-      body {
-        display: none;
-      }
+    .title-shadow {
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 18px;
+      font-family: 'Orbitron', sans-serif;
+      color: rgba(255, 255, 255, 0.05);
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="name-tag">ADAM GAGAH</div>
-    <h2>IP Location Tracker</h2>
-    <input type="text" id="ip" placeholder="MASUKIN IP-nya GOBLOK">
-    <button onclick="trackIP()">Track 🔍</button>
-    <div id="result"></div>
+    <div class="box">
+      <div class="title-shadow">ADAM GAGAH</div>
+      <h3>IP Location Tracker</h3>
+      <input id="ip" type="text" placeholder="MASUKIN IP-nya GOBLOK" />
+      <br />
+      <button onclick="track()">Track 🔍</button>
+      <div id="result"></div>
+    </div>
   </div>
 
   <script>
-    async function trackIP() {
-      const ip = document.getElementById('ip').value.trim();
-      const resultDiv = document.getElementById('result');
+    async function track() {
+      const ip = document.getElementById("ip").value.trim();
+      const resultDiv = document.getElementById("result");
+
       if (!ip) {
-        resultDiv.innerHTML = 'Please enter an IP address.';
+        resultDiv.innerHTML = "<span style='color:red'>IP kosong anjg.</span>";
         return;
       }
-
-      resultDiv.innerHTML = 'Tracking...';
 
       try {
         const res = await fetch(`https://ipapi.co/${ip}/json/`);
         const data = await res.json();
 
-        if (data.error) {
-          resultDiv.innerHTML = 'Invalid IP address.';
-          return;
-        }
-
-        const { ip: ipAddr, city, region, country_name, org, postal } = data;
+        const ipAddr = data.ip || "N/A";
+        const city = data.city || "N/A";
+        const region = data.region || "N/A";
+        const country_name = data.country_name || "N/A";
+        const postal = data.postal || "N/A";
+        const asn = data.asn || "N/A";
 
         resultDiv.innerHTML = `
           <strong>IP:</strong> ${ipAddr}<br>
           <strong>City:</strong> ${city}<br>
           <strong>Province:</strong> ${region}<br>
           <strong>Country:</strong> ${country_name}<br>
-          <strong>ISP:</strong> ${org}<br>
-          <strong>Postal Code:</strong> ${postal || 'N/A'}
+          <strong>Postal Code:</strong> ${postal}<br>
+          <strong>ASN:</strong> ${asn}
         `;
       } catch (err) {
-        resultDiv.innerHTML = 'Error fetching data.';
+        resultDiv.innerHTML = "<span style='color:red'>Gagal fetch data.</span>";
       }
     }
-
-    // Disable pinch zoom
-    document.addEventListener('gesturestart', e => e.preventDefault());
-    document.addEventListener('gesturechange', e => e.preventDefault());
-    document.addEventListener('gestureend', e => e.preventDefault());
   </script>
 </body>
 </html>
