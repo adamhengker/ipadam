@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>IP Location Tracker</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;800&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -25,22 +25,23 @@
       align-items: center;
       overflow: hidden;
       padding: 20px;
+      position: relative;
     }
 
     .background-text {
       position: absolute;
-      font-size: 12vw;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.025);
+      font-size: 24px; /* Ukuran lebih kecil & sopan */
+      font-weight: 800; /* Tebal maksimal */
+      font-family: 'Montserrat', sans-serif;
+      color: rgba(255, 255, 255, 0.04); /* Lebih transparan */
       text-align: center;
       width: 100%;
-      top: 50%;
+      bottom: 20px;
       left: 0;
-      transform: translateY(-50%);
       pointer-events: none;
       user-select: none;
-      white-space: nowrap;
       z-index: 0;
+      letter-spacing: 2px;
     }
 
     .container {
@@ -58,6 +59,7 @@
     h2 {
       font-size: 20px;
       margin-bottom: 16px;
+      font-weight: 700;
     }
 
     input {
@@ -95,7 +97,7 @@
       color: #f87171;
     }
 
-    /* SEMUA DISEMBUNYIKAN UNTUK LAYAR DI ATAS 768px */
+    /* Hanya untuk handphone */
     @media (min-width: 769px) {
       body {
         display: none;
