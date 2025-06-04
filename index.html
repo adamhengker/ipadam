@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -58,6 +58,13 @@
       border-radius: 8px;
       border: none;
       font-size: 16px;
+      background-color: rgba(255,255,255,0.1);
+      color: white;
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+      font-weight: bold;
     }
 
     button {
@@ -96,8 +103,8 @@
 
   <div class="container">
     <h2>IP Location Tracker</h2>
-    <input type="text" id="ipInput" placeholder="masukin IP-nya goblok" />
-    <button onclick="lookupIP()">Lacak Lokasi</button>
+    <input type="text" id="ipInput" placeholder="ENTER IP ADDRESS" />
+    <button onclick="lookupIP()">Track IP</button>
     <div class="result" id="result"></div>
   </div>
 
@@ -112,26 +119,27 @@
 
       const ip = document.getElementById('ipInput').value.trim();
       const resultDiv = document.getElementById('result');
-      resultDiv.innerHTML = "🔍 Sedang mencari...";
+      resultDiv.innerHTML = "🔍 Looking up...";
 
       if (!ip) {
-        resultDiv.innerHTML = "<p class='error'>❗ Mohon masukkan IP address.</p>";
+        resultDiv.innerHTML = "<p class='error'>❗ Please enter an IP address.</p>";
         return;
       }
 
       try {
         const response = await fetch(`https://ipinfo.io/${ip}/json?token=8ef9beab236c8c`);
-        if (!response.ok) throw new Error("Permintaan gagal");
+        if (!response.ok) throw new Error("Request failed");
 
         const data = await response.json();
 
         resultDiv.innerHTML = `
-          <p><strong>🌆 Kota:</strong> ${data.city || '-'}</p>
-          <p><strong>🏞️ Provinsi:</strong> ${data.region || '-'}</p>
+          <p><strong>🌆 City:</strong> ${data.city || '-'}</p>
+          <p><strong>🏞️ Region:</strong> ${data.region || '-'}</p>
           <p><strong>📡 ASN:</strong> ${data.org || '-'}</p>
+          <p><strong>📮 Postal Code:</strong> ${data.postal || '-'}</p>
         `;
       } catch (error) {
-        resultDiv.innerHTML = "<p class='error'>❌ Gagal mengambil data. Pastikan IP valid dan koneksi stabil.</p>";
+        resultDiv.innerHTML = "<p class='error'>❌ Failed to fetch data. Make sure the IP is valid and connection is stable.</p>";
       }
     }
   </script>
